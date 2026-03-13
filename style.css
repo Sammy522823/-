@@ -27,16 +27,11 @@ h1 {
     font-size: 2.5em;
 }
 
-p {
-    text-align: center;
-    color: #666;
-    margin-bottom: 30px;
-    font-size: 1.1em;
-}
-
+/* 表格样式 */
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
     background: #f9f9f9;
     border-radius: 10px;
     overflow: hidden;
@@ -52,76 +47,47 @@ th {
     background-color: #4CAF50;
     color: white;
     font-weight: bold;
-    font-size: 1.1em;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
-    cursor: pointer;
-}
-
-/* 按钮样式 */
+/* 按钮通用样式 */
 button {
+    padding: 8px 12px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* 编辑按钮 - 蓝色 */
+.edit-btn {
     background-color: #008CBA;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
-button:hover {
+.edit-btn:hover {
     background-color: #007B9A;
 }
 
-/* 弹窗样式 */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+/* 删除按钮 - 红色 */
+.delete-btn {
+    background-color: #f44336;
+    color: white;
 }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 10px;
-    text-align: center;
+.delete-btn:hover {
+    background-color: #d32f2f;
 }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+/* 添加按钮 - 绿色 */
+.add-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
-.close:hover {
-    color: black;
-}
-
-input[type=text] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.add-btn:hover {
+    background-color: #388E3C;
 }
