@@ -1,86 +1,80 @@
-// 这里是你的数据。请根据你的Excel表格内容修改这里的数组。
-// 如果你的表格里有数据，请按照下面的格式填入：
-const blocksData = [
-    { block: "橡木木板", count: 1000, assigned: "" },
-    { block: "圆石", count: 5000, assigned: "" },
-    { block: "玻璃", count: 200, assigned: "" },
-    // 添加更多方块...
-];
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('#blocksTable tbody');
+    const addBtn = document.getElementById('addBlockBtn');
 
-// 获取DOM元素
-const tableBody = document.getElementById('blocksTable').getElementsByTagName('tbody')[0];
-const modal = document.getElementById('modal');
-const modalBlockName = document.getElementById('modalBlockName');
-const playerNameInput = document.getElementById('playerName');
-const confirmBtn = document.getElementById('confirmBtn');
-const closeBtn = document.querySelector('.close');
+    // 1. 添加新方块
+    addBtn.addEventListener('click', function() {
+        // 弹窗让用户输入数据
+        const blockName = prompt("请输入方块名称:");
+        if (!blockName) return; // 如果点取消，退出
 
-let currentRowIndex = -1; // 记录当前点击的是哪一行
+        const coords = prompt("请输入坐标位置 (例如 X:10, Y:64, Z:5):");
+        if (!coords) return;
 
-// 1. 初始化表格
-function initTable() {
-    blocksData.forEach((item, index) => {
-        const row = tableBody.insertRow();
-        
-        const cell1 = row.insertCell(0);
-        const cell2 = row.insertCell(1);
-        const cell3 = row.insertCell(2); // 认领人
-        const cell4 = row.insertCell(3); // 操作按钮
-
-        cell1.textContent = item.block;
-        cell2.textContent = item.count;
-        cell3.textContent = item.assigned || "未认领";
-        cell3.id = `assignee-${index}`; // 用于后续更新
-
-        const btn = document.createElement('button');
-        btn.textContent = "认领";
-        btn.onclick = (e) => {
-            e.stopPropagation(); // 防止触发行点击事件
-            openModal(index, item.block);
-        };
-        cell4.appendChild(btn);
+        // 创建新的一行
+        const newRow = createRowElement(blockName, coords, "未认领");
+        tableBody.appendChild(newRow);
     });
-}
 
-// 2. 打开弹窗
-function openModal(index, blockName) {
-    currentRowIndex = index;
-    modalBlockName.textContent = blockName;
-    modal.style.display = "block";
-    playerNameInput.value = ""; // 清空上次输入
-    playerNameInput.focus();
-}
+    // 2. 创建行的函数 (封装起来方便复用)
+    function createRowElement(block, coords, assignee) {
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+            <td>${block}</td>
+            <td>${coords}</td>
+            <td>${assignee}</td>
+            <td>
+                <button class="edit-btn">编辑</button>
+                <button class="delete-btn">删除</button>
+            </td>
+        `;
 
-// 3. 关闭弹窗
-closeBtn.onclick = function() {
-    modal.style.display = "none";
-}
+        // 给新创建的按钮添加事件监听
+        row.querySelector('.edit-btn').addEventListener('click', handleEdit);
+        row.querySelector('.delete-btn').addEventListener('click', handleDelete);
 
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-// 4. 确认认领
-confirmBtn.addEventListener('click', function() {
-    const playerName = playerNameInput.value.trim();
-    if (playerName === "") {
-        alert("请输入你的游戏ID！");
-        return;
+        return row;
     }
 
-    // 更新数据
-    blocksData[currentRowIndex].assigned = playerName;
-    
-    // 更新页面显示
-    document.getElementById(`assignee-${currentRowIndex}`).textContent = playerName;
-    
-    // 关闭弹窗
-    modal.style.display = "none";
-    
-    alert(`成功！${playerName} 已认领 ${blocksData[currentRowIndex].block}`);
+    // 3. 删除功能
+    function handleDelete(e) {
+        if (confirm("确定要删除这一行吗？")) {
+            // 找到按钮所在的那一行 <tr>，然后移除它
+            const row = e.target.closest('tr');
+            row.remove();
+        }
+    }
+
+    // 4. 编辑功能
+    function handleEdit(e) {
+        const button = e.target;
+        const row = button.closest('tr');
+        
+        // 获取当前这一行的数据
+        const cells = row.querySelectorAll('td');
+        const currentBlock = cells[0].textContent;
+        const currentCoords = cells[1].textContent;
+        const currentAssignee = cells[2].textContent;
+
+        // 弹窗让用户修改（如果用户不输入，就保持原样）
+        const newBlock = prompt("修改方块名称:", currentBlock) || currentBlock;
+        const newCoords = prompt("修改坐标位置:", currentCoords) || currentCoords;
+        const newAssignee = prompt("修改认领人:", currentAssignee) || currentAssignee;
+
+        // 更新页面上的数据
+        cells[0].textContent = newBlock;
+        cells[1].textContent = newCoords;
+        cells[2].textContent = newAssignee;
+    }
+
+    // 5. 为页面上已有的按钮绑定事件
+    // 因为页面加载时已经有了一行示例数据，需要给它也加上功能
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', handleDelete);
+    });
+
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', handleEdit);
+    });
 });
-
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', initTable);
