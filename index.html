@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC 建筑方块认领系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🏗️ MC 建筑方块认领表</h1>
+        <p>点击“认领”按钮，输入你的游戏ID，即可锁定该方块！</p>
+
+        <!-- 这里是表格容器 -->
+        <table id="blocksTable">
+            <thead>
+                <tr>
+                    <th>方块名称</th>
+                    <th>数量</th>
+                    <th>当前认领人</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 数据将由 JavaScript 动态插入 -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 认领弹窗 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>认领方块</h2>
+            <p>方块: <strong id="modalBlockName"></strong></p>
+            <label for="playerName">请输入你的游戏ID:</label>
+            <input type="text" id="playerName" placeholder="例如: Steve">
+            <button id="confirmBtn">确认认领</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
